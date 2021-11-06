@@ -1,0 +1,27 @@
+{
+  "name": "http-servers",
+  "version": "1.0.0",
+  "description": "Comparing HTTP/1.1, HTTP/2 and QUIC with Node.js",
+  "main": "http.js",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "http2": "^3.3.7",
+    "https": "^1.0.0",
+    "quic": "^0.4.2",
+    "stream": "0.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trivikr/node-http-servers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trivikr/node-http-servers/issues"
+  },
+  "homepage": "https://github.com/trivikr/node-http-servers#readme"
+}
