@@ -19,6 +19,12 @@ createServer(options, (req, res) => {
   } else if (req.url === '/myvideo.mpd') {
     console.log('request received');
     pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
+  } else if (req.url.indexOf('m4s') >= 0) {
+    console.log('stream request')
+    pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
+  } else if (req.url == '/1_.mp4') {
+    console.log('stream request')
+    pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
   } else {
     // regular expression for filename requested
     // const re = /\/(\w+)*/;

@@ -7,7 +7,7 @@
 
  <Period duration="PT0H0M58.673S">
   <AdaptationSet segmentAlignment="true" maxWidth="400" maxHeight="226" maxFrameRate="30000/1001" par="200:113" lang="und" startWithSAP="1">
-   <SegmentTemplate media="$RepresentationID$_$Number%03d$.m4s" initialization="$RepresentationID$_001.m4s" timescale="90000" startNumber="1" duration="360000"/>
+   <SegmentTemplate media="$RepresentationID$_$Number%03d$.m4s" initialization="$RepresentationID$_.mp4" timescale="90000" startNumber="1" duration="360000"/>
    <Representation id="1" mimeType="video/mp4" codecs="avc1.42C01E" width="400" height="226" frameRate="30000/1001" sar="1:1" bandwidth="238120">
    </Representation>
   </AdaptationSet>
