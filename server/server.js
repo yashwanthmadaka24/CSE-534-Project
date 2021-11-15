@@ -12,18 +12,23 @@ const errCallback = err => {
 };
 
 createServer(options, (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
   console.log("REQ URL >>>>>>>>>> ", req.url);
   if (req.url === "/") {
-    console.log('req received');
+    console.log('html req received');
+    res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../client/index.html`), res, errCallback);
   } else if (req.url === '/myvideo.mpd') {
-    console.log('request received');
+    console.log('mpd request received');
+    res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
   } else if (req.url.indexOf('m4s') >= 0) {
     console.log('stream request')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
   } else if (req.url == '/1_.mp4') {
-    console.log('stream request')
+    console.log('stream-1 request')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
   } else {
     // regular expression for filename requested
