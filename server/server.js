@@ -26,7 +26,7 @@ createServer(options, (req, res) => {
     console.log('stream request')
     res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
-  } else if (req.url == '/1_.mp4') {
+  } else if (req.url.indexOf('mp4') >= 0) {
     console.log('stream-1 request')
     res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../files/${req.url}`), res, errCallback);
