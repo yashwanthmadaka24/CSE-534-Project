@@ -50,6 +50,7 @@ server.on("stream", (stream, headers) => {
     stream.respondWithFile("./files/myvideo.mpd");
   }  else if (url.indexOf('m4s') >= 0) {
     const quality = url.split('_')[1];
+    console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);

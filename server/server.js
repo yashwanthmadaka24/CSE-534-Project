@@ -25,15 +25,18 @@ createServer(options, (req, res) => {
   } else if (url === '/myvideo.mpd') {
     console.log('mpd request received');
     res.setHeader('Access-Control-Allow-Origin', '*')
-    pipeline(createReadStream(`../files/${url}`), res, errCallback);
+    pipeline(createReadStream(`./files/${url}`), res, errCallback);
   } else if (url.indexOf('m4s') >= 0) {
+    const quality = url.split('_')[1];
+    console.log(url);
+    const index = parseInt(url.split('_')[2].split('.')[0]);
     console.log('stream request')
     res.setHeader('Access-Control-Allow-Origin', '*')
     pipeline(createReadStream(`../files/${url}`), res, errCallback);
   } else if (url.indexOf('mp4') >= 0) {
     console.log('stream-1 request')
     res.setHeader('Access-Control-Allow-Origin', '*')
-    pipeline(createReadStream(`../files/${url}`), res, errCallback);
+    pipeline(createReadStream(`./files/${url}`), res, errCallback);
   } else {
     // regular expression for filename requested
     // const re = /\/(\w+)*/;
