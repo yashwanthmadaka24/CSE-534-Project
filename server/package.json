@@ -7,8 +7,10 @@
     "fs": "0.0.1-security",
     "http2": "^3.3.7",
     "https": "^1.0.0",
+    "mime": "^3.0.0",
     "quic": "^0.4.2",
-    "stream": "0.0.2"
+    "stream": "0.0.2",
+    "url": "^0.11.0"
   },
   "devDependencies": {},
   "scripts": {
