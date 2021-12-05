@@ -4,6 +4,7 @@
   "description": "Comparing HTTP/1.1, HTTP/2 and QUIC with Node.js",
   "main": "http.js",
   "dependencies": {
+    "fast-csv": "^4.3.6",
     "fs": "0.0.1-security",
     "http2": "^3.3.7",
     "https": "^1.0.0",

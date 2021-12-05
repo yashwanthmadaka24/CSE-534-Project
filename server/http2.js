@@ -4,11 +4,17 @@ const utils = require("./utils");
 const http2 = require("http2");
 const { HTTP2_HEADER_PATH } = http2.constants;
 const path = require('path');
+const fastcsv = require("fast-csv");
+const fs = require("fs");
+
+var uid = null;
+var jsonData = [];
 
 const options = {
   key: readFileSync("./localhost-key.pem"),
   cert: readFileSync("./localhost.pem")
 };
+
 
 const server = createSecureServer(options).listen(3000);
 
@@ -43,6 +49,7 @@ const pushAsset = (stream, file) => {
 
 server.on("stream", (stream, headers) => {
   const url = headers[":path"].split('?')[0];
+  const url2 = headers[":path"].split('?')[1];
   const id = headers[":path"].split('?').length > 1 && headers[":path"].split('?')[1].split('=')[1];
   if (url === "/") {
     stream.respondWithFile("../client/index.html");
@@ -52,8 +59,29 @@ server.on("stream", (stream, headers) => {
     const quality = url.split('_')[1];
     console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
+    if(uid == null) {
+      console.log(url);
+      const id = url2.split('=')[1];
+      console.log("uuid",id);
+      uid = id;
+    }
+    var temp = {
+      ID: index,
+      URL: url,
+      TIME: Date.now(),
+    };
+    jsonData.push(temp);
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
+    if(index == 59) {
+      var filename = fs.createWriteStream(uid+".csv");
+      fastcsv
+      .write(jsonData, { headers: true })
+      .on("finish",function(){
+        console.log("csv file downloaded");
+      })
+      .pipe(filename);
+    }
     // console.log(index)
     // if (index < 58) {
     //   const file = {
@@ -65,9 +93,15 @@ server.on("stream", (stream, headers) => {
     //   };
     //   push(stream, file);
     // }
-
   } else if (url.indexOf('mp4') >= 0) {
     console.log('stream request')
+    const index = parseInt(url.split('_')[2].split('.')[0]);
+    var temp = {
+      ID: index,
+      URL: url,
+      TIME: Date.now(),
+    };
+    jsonData.push(temp);
     stream.respondWithFile(`./files${url}`);
   }  else {
     // regular expression for filename requested
