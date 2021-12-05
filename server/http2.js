@@ -12,7 +12,6 @@ var jsonData = [{
   ID: 1,
   URL: 'temp',
 }];
-var filename = null;
 
 const options = {
   key: readFileSync("./localhost-key.pem"),
@@ -53,6 +52,7 @@ const pushAsset = (stream, file) => {
 
 server.on("stream", (stream, headers) => {
   const url = headers[":path"].split('?')[0];
+  const url2 = headers[":path"].split('?')[1];
   const id = headers[":path"].split('?').length > 1 && headers[":path"].split('?')[1].split('=')[1];
   if (url === "/") {
     stream.respondWithFile("../client/index.html");
@@ -63,26 +63,28 @@ server.on("stream", (stream, headers) => {
     console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
 
-    if(uid != null) {
-      const id = Query.split('?')[1].split('=')[1];
+    if(uid == null) {
+      console.log(url);
+      const id = url2.split('=')[1];
+      console.log("uuid",id);
       uid = id;
-      filename = fs.createWriteStream(uid+".csv");
     } else {
       var temp = {
         ID: index,
         URL: url,
-      }
+      };
       jsonData.push(temp);
     }
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
     if(index == 59) {
+      var filename = fs.createWriteStream(uid+".csv");
       fastcsv
       .write(jsonData, { headers: true })
-      .on("finish", function() {
-        console.log("Write to CSV successfully!");
+      .on("finish",function(){
+        console.log("csv file downloaded");
       })
-  .pipe(filename);
+      .pipe(filename);
     }
     // console.log(index)
     // if (index < 58) {
