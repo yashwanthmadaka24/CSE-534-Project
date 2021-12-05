@@ -41,14 +41,12 @@ createServer(options, (req, res) => {
       const id = url2.split('=')[1];
       console.log("uuid",id);
       uid = id;
-
-    } else {
-      var temp = {
-        ID: index,
-        URL: url,
-      };
-      jsonData.push(temp);
     }
+    var temp = {
+      ID: index,
+      URL: url,
+    };
+    jsonData.push(temp);
     console.log('stream request')
     res.setHeader('Access-Control-Allow-Origin', '*')
     if(index == 59) {

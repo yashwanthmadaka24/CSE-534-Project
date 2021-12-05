@@ -64,13 +64,12 @@ server.on("stream", (stream, headers) => {
       const id = url2.split('=')[1];
       console.log("uuid",id);
       uid = id;
-    } else {
-      var temp = {
-        ID: index,
-        URL: url,
-      };
-      jsonData.push(temp);
     }
+    var temp = {
+      ID: index,
+      URL: url,
+    };
+    jsonData.push(temp);
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
     if(index == 59) {
