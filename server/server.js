@@ -27,7 +27,8 @@ createServer(options, (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   console.log("REQ URL >>>>>>>>>> ", req.url);
   const url = req.url.split('?')[0];
-  const url2 = req.url.split('?')[1];
+  let url2 = "";
+  if (req.url.indexOf('?') >= 0)url2 = req.url.split('?')[1];
   const id = req.url.split('?').length > 1 && req.url.split('?')[1].split('=')[1];
   console.log('id: ' + " " + id + "url: " + " " + url);
   if (url === "/") {
@@ -80,7 +81,8 @@ createServer(options, (req, res) => {
     };
     jsonData.push(temp);
     pipeline(createReadStream(`./files/${url}`), res, errCallback);
-  } else {
+  } else if (url.indexOf('.js') >= 0) {
+    pipeline(createReadStream(`./${url}`), res, errCallback);
     // regular expression for filename requested
     // const re = /\/(\w+)*/;
     // const filename = req.url.replace(re, "$1");
