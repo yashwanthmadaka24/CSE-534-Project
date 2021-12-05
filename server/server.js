@@ -24,6 +24,7 @@ createServer(options, (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   console.log("REQ URL >>>>>>>>>> ", req.url);
   const url = req.url.split('?')[0];
+  const url2 = req.url.split('?')[1];
   const id = req.url.split('?').length > 1 && req.url.split('?')[1].split('=')[1];
   console.log('id: ' + " " + id + "url: " + " " + url);
   if (url === "/") {
@@ -39,10 +40,11 @@ createServer(options, (req, res) => {
     console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
     if(uid == null) {
-      console.log(url);
-      const id = url.split('=')[1];
+      console.log("url2",url2);
+      const id = url2.split('=')[1];
       console.log("uuid",id);
       uid = id;
+
     } else {
       var temp = {
         ID: index,
@@ -62,7 +64,7 @@ createServer(options, (req, res) => {
       })
       .pipe(filename);
     }
-    pipeline(createReadStream(`../files/${url}`), res, errCallback);
+    pipeline(createReadStream(`./files/${url}`), res, errCallback);
   } else if (url.indexOf('mp4') >= 0) {
     console.log('stream-1 request')
     res.setHeader('Access-Control-Allow-Origin', '*')
