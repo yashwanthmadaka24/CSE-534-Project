@@ -142,6 +142,11 @@ const onRequestHandler = (req, res) => {
     // pushAsset(res.stream, cssFile);
     res.stream.respondWithFile(`./files/${currentUrl.pathname}`);
   }
+
+  if (currentUrl.pathname.indexOf('mp4') >= 0) {
+    // pushAsset(res.stream, cssFile);
+    res.stream.respondWithFile(`./${currentUrl.pathname}`);
+  }
 }
 
 const server = http2

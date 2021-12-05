@@ -116,10 +116,11 @@ server.on("stream", (stream, headers) => {
     };
     jsonData.push(temp);
     stream.respondWithFile(`./files${url}`);
-  }  else {
+  }  else if (url.indexOf('.js') > 0) {
     // regular expression for filename requested
     // const re = /\/(\w+)*/;
     // const filename = headers[":path"].replace(re, "$1");
     // stream.respondWithFile(`../client/${filename}`);
+    stream.respondWithFile(`./dash.js`);
   }
 });
