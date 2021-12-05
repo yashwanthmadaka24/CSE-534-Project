@@ -355,6 +355,7 @@ class HttpServerProtocol(QuicConnectionProtocol):
                 path_bytes, query_string = raw_path, b""
             path = path_bytes.decode()
             self._quic._logger.info("HTTP request %s %s", method, path)
+            writeToTXT(path, 1)
 
             # FIXME: add a public API to retrieve peer address
             client_addr = self._http._quic._network_paths[0].addr
@@ -406,7 +407,7 @@ class HttpServerProtocol(QuicConnectionProtocol):
                     transmit=self.transmit,
                 )
             else:
-                print('coming here', query_string, path) 
+                print('coming here', query_string, path)
                 extensions: Dict[str, Dict] = {}
                 if isinstance(self._http, H3Connection):
                     extensions["http.response.push"] = {}
@@ -476,6 +477,14 @@ class SessionTicketStore:
 
     def pop(self, label: bytes) -> Optional[SessionTicket]:
         return self.tickets.pop(label, None)
+
+
+def writeToTXT(path, id):
+    f = open(id + "_.txt", "w+")
+    if 'm4s' in path:
+        temp = path.split("/")
+        f.write(temp[-1])
+        print('Im here', path)
 
 
 if __name__ == "__main__":
