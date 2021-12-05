@@ -57,6 +57,7 @@ createServer(options, (req, res) => {
       fastcsv
       .write(jsonData, { headers: true })
       .on("finish",function(){
+        uid = null;
         console.log("csv file downloaded");
       })
       .pipe(filename);
