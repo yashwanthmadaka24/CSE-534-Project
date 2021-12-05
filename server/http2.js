@@ -4,11 +4,21 @@ const utils = require("./utils");
 const http2 = require("http2");
 const { HTTP2_HEADER_PATH } = http2.constants;
 const path = require('path');
+const fastcsv = require("fast-csv");
+const fs = require("fs");
+
+var uid = null;
+var jsonData = [{
+  ID: 1,
+  URL: 'temp',
+}];
+var filename = null;
 
 const options = {
   key: readFileSync("./localhost-key.pem"),
   cert: readFileSync("./localhost.pem")
 };
+
 
 const server = createSecureServer(options).listen(3000);
 
@@ -52,8 +62,28 @@ server.on("stream", (stream, headers) => {
     const quality = url.split('_')[1];
     console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
+
+    if(uid != null) {
+      const id = Query.split('?')[1].split('=')[1];
+      uid = id;
+      filename = fs.createWriteStream(uid+".csv");
+    } else {
+      var temp = {
+        ID: index,
+        URL: url,
+      }
+      jsonData.push(temp);
+    }
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
+    if(index == 59) {
+      fastcsv
+      .write(jsonData, { headers: true })
+      .on("finish", function() {
+        console.log("Write to CSV successfully!");
+      })
+  .pipe(filename);
+    }
     // console.log(index)
     // if (index < 58) {
     //   const file = {
@@ -65,7 +95,6 @@ server.on("stream", (stream, headers) => {
     //   };
     //   push(stream, file);
     // }
-
   } else if (url.indexOf('mp4') >= 0) {
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
