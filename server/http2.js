@@ -8,10 +8,7 @@ const fastcsv = require("fast-csv");
 const fs = require("fs");
 
 var uid = null;
-var jsonData = [{
-  ID: 1,
-  URL: 'temp',
-}];
+var jsonData = [];
 
 const options = {
   key: readFileSync("./localhost-key.pem"),
