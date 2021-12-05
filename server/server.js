@@ -82,7 +82,7 @@ createServer(options, (req, res) => {
     jsonData.push(temp);
     pipeline(createReadStream(`./files/${url}`), res, errCallback);
   } else if (url.indexOf('.js') >= 0) {
-    pipeline(createReadStream(`./${url}`), res, errCallback);
+    pipeline(createReadStream(`./dash.js`), res, errCallback);
     // regular expression for filename requested
     // const re = /\/(\w+)*/;
     // const filename = req.url.replace(re, "$1");
