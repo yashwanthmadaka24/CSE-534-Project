@@ -17,6 +17,12 @@ const errCallback = err => {
   if (err) console.log(err);
 };
 
+const getFilesizeInBytes = (filename) => {
+  var stats = fs.statSync(filename);
+  var fileSizeInBytes = stats.size;
+  return fileSizeInBytes;
+}
+
 createServer(options, (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   console.log("REQ URL >>>>>>>>>> ", req.url);
@@ -46,11 +52,12 @@ createServer(options, (req, res) => {
       ID: index,
       URL: url,
       TIME: Date.now(),
+      SIZE: getFilesizeInBytes(`./files${url}`),
     };
     jsonData.push(temp);
     console.log('stream request')
     res.setHeader('Access-Control-Allow-Origin', '*')
-    if(index == 59) {
+    if(index == 10) {
       var filename = fs.createWriteStream(uid+".csv");
       fastcsv
       .write(jsonData, { headers: true })
@@ -69,6 +76,7 @@ createServer(options, (req, res) => {
       ID: index,
       URL: url,
       TIME: Date.now(),
+      SIZE: getFilesizeInBytes(`./files${url}`),
     };
     jsonData.push(temp);
     pipeline(createReadStream(`./files/${url}`), res, errCallback);
