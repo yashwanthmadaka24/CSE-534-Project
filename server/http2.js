@@ -55,7 +55,8 @@ const pushAsset = (stream, file) => {
 
 server.on("stream", (stream, headers) => {
   const url = headers[":path"].split('?')[0];
-  const url2 = headers[":path"].split('?')[1];
+  let url2 = "";
+  if (headers[":path"].indexOf('?') >= 0)url2 = headers[":path"].split('?')[1];
   const id = headers[":path"].split('?').length > 1 && headers[":path"].split('?')[1].split('=')[1];
   if (url === "/") {
     stream.respondWithFile("../client/index.html");

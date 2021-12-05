@@ -3,10 +3,17 @@ const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const { isNull } = require('util');
+const fastcsv = require("fast-csv");
 
+const getFilesizeInBytes = (filename) => {
+  var stats = fs.statSync(filename);
+  var fileSizeInBytes = stats.size;
+  return fileSizeInBytes;
+}
 //
 var uid = null
 var push = false
+var jsonData = [];
 
 // required of kpush
 const { HTTP2_HEADER_PATH } = http2.constants;
@@ -82,8 +89,8 @@ const onRequestHandler = (req, res) => {
   }
 
   if (currentUrl.pathname.indexOf('m4s') >= 0) {
+    const index = parseInt(currentUrl.pathname.split('_')[2], 10);
     if (uid) {
-      const index = parseInt(currentUrl.pathname.split('_')[2], 10);
       // console.log(`./files/segment_1080p_${index+1}.m4s?customQuery=${uid}`);
       let quality = currentUrl.pathname.split('_')[1];
       quality = parseInt(quality.substr(0, quality.length -1), 10);
@@ -95,8 +102,34 @@ const onRequestHandler = (req, res) => {
           filePath: `./files/segment_${quality}p_${index+ i}.m4s`,
         };
         pushAsset(res.stream, video);
-      }
-      
+      }      
+    }
+    const url2 = currentUrl.query;
+    if(uid == null) {
+      console.log(url);
+      const id = url2.split('=')[1];
+      console.log("uuid",id);
+      uid = id;
+    }
+    
+    var temp = {
+      ID: index,
+      URL: url,
+      TIME: Date.now(),
+      SIZE: getFilesizeInBytes(`./files${currentUrl.pathname}`)
+    };
+    
+    jsonData.push(temp);
+    console.log('stream request')
+    // stream.respondWithFile(`./files/${url}`);
+    if(index == 30) {
+      var filename = fs.createWriteStream(uid+".csv");
+      fastcsv
+      .write(jsonData, { headers: true })
+      .on("finish",function(){
+        console.log("csv file downloaded");
+      })
+      .pipe(filename);
     }
     const Query = req.url;
     console.log(Query);
