@@ -15,6 +15,12 @@ const options = {
   cert: readFileSync("./localhost.pem")
 };
 
+const getFilesizeInBytes = (filename) => {
+  var stats = fs.statSync(filename);
+  var fileSizeInBytes = stats.size;
+  return fileSizeInBytes;
+}
+
 
 const server = createSecureServer(options).listen(3000);
 
@@ -65,11 +71,14 @@ server.on("stream", (stream, headers) => {
       console.log("uuid",id);
       uid = id;
     }
+    
     var temp = {
       ID: index,
       URL: url,
       TIME: Date.now(),
+      SIZE: getFilesizeInBytes(`./files${url}`)
     };
+    
     jsonData.push(temp);
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
@@ -100,6 +109,7 @@ server.on("stream", (stream, headers) => {
       ID: index,
       URL: url,
       TIME: Date.now(),
+      SIZE: getFilesizeInBytes(`./files${url}`),
     };
     jsonData.push(temp);
     stream.respondWithFile(`./files${url}`);
