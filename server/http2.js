@@ -98,6 +98,12 @@ server.on("stream", (stream, headers) => {
     // }
   } else if (url.indexOf('mp4') >= 0) {
     console.log('stream request')
+    const index = parseInt(url.split('_')[2].split('.')[0]);
+    var temp = {
+      ID: index,
+      URL: url,
+    };
+    jsonData.push(temp);
     stream.respondWithFile(`./files${url}`);
   }  else {
     // regular expression for filename requested
