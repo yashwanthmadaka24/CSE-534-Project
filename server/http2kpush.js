@@ -107,7 +107,8 @@ const onRequestHandler = (req, res) => {
     const url2 = currentUrl.query;
     if(uid == null) {
       console.log(url);
-      const id = url2.split('=')[1];
+      let id = "";
+      if (url2 && url2.indexof("=") >= 0)id = url2.split('=')[1];
       console.log("uuid",id);
       uid = id;
     }
@@ -131,10 +132,14 @@ const onRequestHandler = (req, res) => {
       })
       .pipe(filename);
     }
-    const Query = req.url;
+    let Query = req.url;
     console.log(Query);
-    const id = Query.split('?')[1].split('=')[1];
-    uid = id;
+    let id = "";
+    if (Query.indexOf('?') >= 0) {
+      id = Query.split('?')[1].split('=')[1];
+      uid = id;
+    }
+    
     res.stream.respondWithFile(`./files/${currentUrl.pathname}`);
   }
 
@@ -143,10 +148,12 @@ const onRequestHandler = (req, res) => {
     res.stream.respondWithFile(`./files/${currentUrl.pathname}`);
   }
 
-  if (currentUrl.pathname.indexOf('mp4') >= 0) {
+  if (currentUrl.pathname.indexOf('.js') >= 0) {
     // pushAsset(res.stream, cssFile);
-    res.stream.respondWithFile(`./${currentUrl.pathname}`);
+    res.stream.respondWithFile(`./dash.js`);
   }
+
+  
 }
 
 const server = http2
