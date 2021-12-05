@@ -64,6 +64,7 @@ createServer(options, (req, res) => {
       .write(jsonData, { headers: true })
       .on("finish",function(){
         uid = null;
+        jsonData=[];
         console.log("csv file downloaded");
       })
       .pipe(filename);
