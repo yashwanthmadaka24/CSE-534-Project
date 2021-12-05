@@ -68,6 +68,7 @@ server.on("stream", (stream, headers) => {
     var temp = {
       ID: index,
       URL: url,
+      TIME: Date.now(),
     };
     jsonData.push(temp);
     console.log('stream request')
@@ -98,6 +99,7 @@ server.on("stream", (stream, headers) => {
     var temp = {
       ID: index,
       URL: url,
+      TIME: Date.now(),
     };
     jsonData.push(temp);
     stream.respondWithFile(`./files${url}`);

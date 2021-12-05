@@ -45,6 +45,7 @@ createServer(options, (req, res) => {
     var temp = {
       ID: index,
       URL: url,
+      TIME: Date.now(),
     };
     jsonData.push(temp);
     console.log('stream request')
@@ -67,6 +68,7 @@ createServer(options, (req, res) => {
     var temp = {
       ID: index,
       URL: url,
+      TIME: Date.now(),
     };
     jsonData.push(temp);
     pipeline(createReadStream(`./files/${url}`), res, errCallback);
