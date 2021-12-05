@@ -480,11 +480,13 @@ class SessionTicketStore:
 
 
 def writeToTXT(path, id):
-    f = open(id + "_.txt", "w+")
     if 'm4s' in path:
+        filename = str(id)+'.txt'
+        f = open(filename, "a+")
         temp = path.split("/")
-        f.write(temp[-1])
+        f.write(temp[-1]+',')
         print('Im here', path)
+        f.close()
 
 
 if __name__ == "__main__":

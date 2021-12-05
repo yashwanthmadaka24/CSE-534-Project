@@ -2,6 +2,7 @@ const http2 = require('http2');
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
+const { isNull } = require('util');
 
 //
 var uid = null
@@ -22,6 +23,14 @@ const pushAsset = (stream, file) => {
   stream.pushStream({ [HTTP2_HEADER_PATH]: file.path }, (err, pushStream) => {
     pushStream.respondWithFile(filePath, file.headers);
   });
+}
+
+const state = {
+  startTime: null,
+  endTime: null,
+  currentQuality: null,
+  count: null,
+  uid: null,
 }
 
 // Request Handler
