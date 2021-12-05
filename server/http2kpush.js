@@ -25,12 +25,37 @@ const pushAsset = (stream, file) => {
   });
 }
 
-const state = {
-  startTime: null,
-  endTime: null,
-  currentQuality: null,
-  count: null,
-  uid: null,
+let state = {
+  startTime: 0,
+  endTime: 0,
+  currentQuality: 0,
+  count: 0,
+}
+
+var kpush = 1;
+
+const setState = (start, currentQuality)  => {
+  let newstate = state;
+  if (start) {
+    newstate.start = start;
+  } else {
+    if (newstate.currentQuality == currentQuality) {
+      newstate.count++;
+      if (newstate.count > 2) {
+        newstate.count =1;
+        if (currentQuality >= 300) {
+          kpush = kpush < 3 ? kpush+1 : kpush;
+        }
+      }
+    } else if (newstate.currentQuality > currentQuality) {
+      newstate.count++;
+    } else {
+      newstate.count = 0;
+      kpush = 1;
+      newstate.currentQuality = currentQuality;
+    }
+  }
+  state = newstate;
 }
 
 // Request Handler
@@ -59,18 +84,19 @@ const onRequestHandler = (req, res) => {
   if (currentUrl.pathname.indexOf('m4s') >= 0) {
     if (uid) {
       const index = parseInt(currentUrl.pathname.split('_')[2], 10);
-      console.log('index', index, uid);
-      console.log(`./files/segment_1080p_${index+1}.m4s?customQuery=${uid}`);
-      if (index < 5 && !push) {
-        push = true;
-        for (let i=1; i<10; i++) {
-          const video = {
-            path: `/segment_1080p_${index+i}.m4s?customQuery=value`,
-            filePath: `./files/segment_1080p_${index+ i}.m4s`,
-          };
-          pushAsset(res.stream, video);
-        }
+      // console.log(`./files/segment_1080p_${index+1}.m4s?customQuery=${uid}`);
+      let quality = currentUrl.pathname.split('_')[1];
+      quality = parseInt(quality.substr(0, quality.length -1), 10);
+      setState(null, quality);
+      console.log('index', index, uid, quality);
+      for (let i=1; i<kpush; i++) {
+        const video = {
+          path: `/segment_${quality}p_${index+i}.m4s?customQuery=${uid}`,
+          filePath: `./files/segment_${quality}p_${index+ i}.m4s`,
+        };
+        pushAsset(res.stream, video);
       }
+      
     }
     const Query = req.url;
     console.log(Query);
