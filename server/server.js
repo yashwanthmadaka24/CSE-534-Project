@@ -58,7 +58,7 @@ createServer(options, (req, res) => {
     jsonData.push(temp);
     console.log('stream request')
     res.setHeader('Access-Control-Allow-Origin', '*')
-    if(index == 30) {
+    if(index == 59) {
       var filename = fs.createWriteStream(uid+".csv");
       fastcsv
       .write(jsonData, { headers: true })

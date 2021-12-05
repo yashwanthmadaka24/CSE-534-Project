@@ -83,7 +83,7 @@ server.on("stream", (stream, headers) => {
     jsonData.push(temp);
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
-    if(index == 30) {
+    if(index == 59) {
       var filename = fs.createWriteStream(uid+".csv");
       fastcsv
       .write(jsonData, { headers: true })
