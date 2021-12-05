@@ -82,12 +82,14 @@ server.on("stream", (stream, headers) => {
     jsonData.push(temp);
     console.log('stream request')
     stream.respondWithFile(`./files${url}`);
-    if(index == 59) {
+    if(index == 30) {
       var filename = fs.createWriteStream(uid+".csv");
       fastcsv
       .write(jsonData, { headers: true })
       .on("finish",function(){
         console.log("csv file downloaded");
+        uid = null;
+        jsonData = [];
       })
       .pipe(filename);
     }
