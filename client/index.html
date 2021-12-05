@@ -44,7 +44,7 @@
             localStorage.setItem('experiment', 0);
           }
 
-          value = link.searchParams.get('v')+'_'+link.searchParams.get('l')+'_'+ link.searchParams.get('d')+'_'+counter;
+          value = link.searchParams.get('v')+'_'+link.searchParams.get('l')+'_'+ link.searchParams.get('d')+'_'+link.searchParams.get('number');
           console.log(value);
           video = document.querySelector("video");
           player = dashjs.MediaPlayer().create();
