@@ -62,7 +62,6 @@ server.on("stream", (stream, headers) => {
     const quality = url.split('_')[1];
     console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
-
     if(uid == null) {
       console.log(url);
       const id = url2.split('=')[1];

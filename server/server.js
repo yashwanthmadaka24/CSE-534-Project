@@ -2,6 +2,14 @@ const { createServer } = require("https");
 const { readFileSync, createReadStream } = require("fs");
 const { pipeline } = require("stream");
 const { url } = require("inspector");
+const fastcsv = require("fast-csv");
+const fs = require("fs");
+
+var uid = null;
+var jsonData = [{
+  ID: 1,
+  URL: 'temp',
+}];
 
 const options = {
   key: readFileSync("./localhost-key.pem"),
@@ -30,8 +38,29 @@ createServer(options, (req, res) => {
     const quality = url.split('_')[1];
     console.log(url);
     const index = parseInt(url.split('_')[2].split('.')[0]);
+    if(uid == null) {
+      console.log(url);
+      const id = url.split('=')[1];
+      console.log("uuid",id);
+      uid = id;
+    } else {
+      var temp = {
+        ID: index,
+        URL: url,
+      };
+      jsonData.push(temp);
+    }
     console.log('stream request')
     res.setHeader('Access-Control-Allow-Origin', '*')
+    if(index == 59) {
+      var filename = fs.createWriteStream(uid+".csv");
+      fastcsv
+      .write(jsonData, { headers: true })
+      .on("finish",function(){
+        console.log("csv file downloaded");
+      })
+      .pipe(filename);
+    }
     pipeline(createReadStream(`../files/${url}`), res, errCallback);
   } else if (url.indexOf('mp4') >= 0) {
     console.log('stream-1 request')
