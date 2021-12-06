@@ -28,6 +28,18 @@ const options = {
 const pushAsset = (stream, file) => {
   const filePath = path.join(__dirname, file.filePath);
   stream.pushStream({ [HTTP2_HEADER_PATH]: file.path }, (err, pushStream) => {
+    pushStream.on('error', function(err){
+      // catch error from pushStream here;
+      var filename = fs.createWriteStream(uid+".csv");
+      fastcsv
+      .write(jsonData, { headers: true })
+      .on("finish",function(){
+        uid =null;
+        jsonData=[];
+        console.log("csv file downloaded");
+      })
+      .pipe(filename);
+    });
     pushStream.respondWithFile(filePath, file.headers);
   });
 }
@@ -97,6 +109,17 @@ const onRequestHandler = (req, res) => {
       setState(null, quality);
       console.log('index', index, uid, quality);
       for (let i=1; i<kpush; i++) {
+        if (index + i == 59) {
+          var filename = fs.createWriteStream(uid+".csv");
+          fastcsv
+          .write(jsonData, { headers: true })
+          .on("finish",function(){
+            uid =null;
+            jsonData=[];
+            console.log("csv file downloaded");
+      })
+      .pipe(filename);
+        }
         const video = {
           path: `/segment_${quality}p_${index+i}.m4s?customQuery=${uid}`,
           filePath: `./files/segment_${quality}p_${index+ i}.m4s`,
@@ -108,14 +131,14 @@ const onRequestHandler = (req, res) => {
     if(uid == null) {
       console.log(url);
       let id = "";
-      if (url2 && url2.indexof("=") >= 0)id = url2.split('=')[1];
+      if (url2 && url2.indexOf("=") >= 0)id = url2.split('=')[1];
       console.log("uuid",id);
       uid = id;
     }
     
     var temp = {
       ID: index,
-      URL: url,
+      URL: currentUrl.pathname,
       TIME: Date.now(),
       SIZE: getFilesizeInBytes(`./files${currentUrl.pathname}`)
     };
@@ -123,7 +146,7 @@ const onRequestHandler = (req, res) => {
     jsonData.push(temp);
     console.log('stream request')
     // stream.respondWithFile(`./files/${url}`);
-    if(index == 59) {
+    if(index >= 59) {
       var filename = fs.createWriteStream(uid+".csv");
       fastcsv
       .write(jsonData, { headers: true })
