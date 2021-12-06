@@ -6,6 +6,7 @@ import time
 from collections import deque
 from email.utils import formatdate
 from typing import Callable, Deque, Dict, List, Optional, Union, cast
+import os
 
 import wsproto
 import wsproto.events
@@ -481,13 +482,16 @@ class SessionTicketStore:
 
 def writeToTXT(path, id):
     if 'm4s' in path:
-        filename = str(id)+'.txt'
-        f = open(filename, "a+")
+        f = open("exps.txt", "a+")
         temp = path.split("/")
-        f.write(temp[-1]+',')
+        filepath = 'examples/templates' + path
+        size = os.path.getsize(filepath)
+        f.write(temp[-1] + ',')
+        f.write(str(time.time() * 1000)+',')
+        f.write(str(size))
+        f.write('\n')
         print('Im here', path)
         f.close()
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="QUIC server")

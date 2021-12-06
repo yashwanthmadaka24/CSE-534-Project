@@ -8,7 +8,7 @@
  <Period duration="PT0H3M55.040S">
   <AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und" startWithSAP="1">
    <SegmentTemplate media="segment_$RepresentationID$_$Number$.m4s" initialization="segment_$RepresentationID$_.mp4" timescale="12800" startNumber="1" duration="51200" />
-  <Representation id="144p" mimeType="video/mp4" codecs="avc1.4D400C" width="256" height="144" frameRate="25" sar="1:1" bandwidth="57645">
+   <Representation id="144p" mimeType="video/mp4" codecs="avc1.4D400C" width="256" height="144" frameRate="25" sar="1:1" bandwidth="57645">
    </Representation>
    <Representation id="360p" mimeType="video/mp4" codecs="avc1.4D401E" width="640" height="360" frameRate="25" sar="1:1" bandwidth="460818" scanType="progressive">
    </Representation>
