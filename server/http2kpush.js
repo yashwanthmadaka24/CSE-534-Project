@@ -183,4 +183,4 @@ const onRequestHandler = (req, res) => {
 
 const server = http2
   .createSecureServer(options, onRequestHandler)
-  .listen(3000);
+  .listen(3002);

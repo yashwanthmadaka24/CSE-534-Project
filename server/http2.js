@@ -22,7 +22,7 @@ const getFilesizeInBytes = (filename) => {
 }
 
 
-const server = createSecureServer(options).listen(3000);
+const server = createSecureServer(options).listen(3001);
 
 const pushAsset = (stream, file) => {
   const filePath = path.join(__dirname, file.filePath);
