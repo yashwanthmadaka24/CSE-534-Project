@@ -8,6 +8,7 @@ Comparing HTTP/1.1, HTTP/2 and HTTP/2 with adaptive server push with Node.js. HT
 Run the below command in your cmd.
 
 ```
+cd server
 node http1.js
 ```
 
@@ -15,6 +16,7 @@ node http1.js
 Run the below command in your cmd.
 
 ```
+cd server
 node http2.js
 ```
 
@@ -23,6 +25,7 @@ node http2.js
 Run the below command in your cmd.
 
 ```
+cd server
 node http2kpush.js
 ```
 
