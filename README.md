@@ -28,8 +28,7 @@ Run the below command in your cmd.
 cd server
 node http2kpush.js
 ```
-
-## HTTP/2.0 Adpative Server Push Running Command
+## Running client
 ```
 client will be served at for all the three servers
 https://localhost:3000
